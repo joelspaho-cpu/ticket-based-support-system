@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace MyApp.Namespace
+namespace TicketSupportSystem.Pages.UserView
 {
-    public class LoginModel : PageModel
+    public class VerifyEmailModel : PageModel
     {
         public void OnGet()
         {

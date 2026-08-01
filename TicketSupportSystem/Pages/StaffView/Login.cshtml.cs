@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace MyApp.Namespace
+namespace TicketSupportSystem.Pages.StaffView
 {
-    public class DashboardModel : PageModel
+    public class LoginModel : PageModel
     {
         public void OnGet()
         {

@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace MyApp.Namespace
+namespace TicketSupportSystem.Pages.UserView
 {
-    public class DashboardModel : PageModel
+    public class ForgotPasswordModel : PageModel
     {
         public void OnGet()
         {

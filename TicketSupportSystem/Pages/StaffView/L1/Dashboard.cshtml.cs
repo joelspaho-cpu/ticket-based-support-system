@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace MyApp.Namespace
+namespace TicketSupportSystem.Pages.StaffView
 {
-    public class TwoFactorVerifyModel : PageModel
+    public class DashboardModel : PageModel
     {
         public void OnGet()
         {
