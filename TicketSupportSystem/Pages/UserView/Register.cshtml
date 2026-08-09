@@ -1,4 +1,45 @@
 ﻿@page
 @model TicketSupportSystem.Pages.UserView.RegisterModel
-@{
-}
+ <form method="post">
+  <div class="mb-3">
+    <label asp-for="DisplayName" class="form-label">Display Name </label>
+    <input asp-for="DisplayName" />
+    <span asp-validation-for="DisplayName" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+    <label asp-for="Email" class="form-label">Email </label>
+    <input asp-for="Email" />
+    <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+    <label asp-for="Password" class="form-label">Password </label>
+    <input asp-for="Password" />
+    <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="mb-3">   
+    <label asp-for="ConfirmPassword" class="form-label">Confirm Password</label>
+    <input asp-for="ConfirmPassword" />
+    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+    <label asp-for="Region" class="form-label">Region </label>
+    <select asp-for="Region" class="form-control">
+        <option value="">Select your region</option>
+        <option value="GB">United Kingdom</option>
+        <option value="AL">Albania</option>
+        <option value="IT">Italy</option></select>
+    <span asp-validation-for="Region" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+    <label asp-for="Language" class="form-label">Language </label>
+    <select asp-for="Language" class="form-control">
+        <option value="">Select your language</option>
+        <option value="EN">English</option>
+        <option value="SQ">Shqip</option>
+        <option value="IT">Italiano</option></select>
+    <span asp-validation-for="Region" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+    <button type="submit" class="btn btn-primary">Register</button>
+    </div>
+  </form>
