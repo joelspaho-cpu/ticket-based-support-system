@@ -5,8 +5,8 @@ namespace TicketSupportSystem.Pages;
 
 public class IndexModel : PageModel
 {
-    public void OnGet()
+    public IActionResult OnGet()
     {
-
+        return RedirectToPage("/UserView/Login");
     }
 }
