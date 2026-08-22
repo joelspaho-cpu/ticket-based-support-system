@@ -1,11 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using TicketSupportSystem.Data;
+using TicketSupportSystem.Services;
+using TicketSupportSystem.Models;
 
 namespace TicketSupportSystem.Pages.UserView
 {
     public class RegisterModel : PageModel
     {
+        private readonly IHashingService _hasher;
+        private readonly AppDbContext _db;
         [BindProperty]
         [Required(ErrorMessage = "Please enter a valid display name"), MaxLength(50)]
         public string DisplayName {get; set;} = string.Empty;
@@ -13,10 +18,10 @@ namespace TicketSupportSystem.Pages.UserView
         [Required(ErrorMessage = "Please enter a valid email"), EmailAddress, MaxLength(254)]
         public string Email {get; set;} = string.Empty;
         [BindProperty]
-        [Required(ErrorMessage = "Please enter a valid password"), DataType(DataType.Password), MinLength(8), MaxLength(100)]
+        [Required(ErrorMessage = "Please enter a password"), DataType(DataType.Password), MinLength(8), MaxLength(100)]
         public string Password {get; set;} = string.Empty;
         [BindProperty]
-        [Required(ErrorMessage = "Please ensure the passwords match"), DataType(DataType.Password), Compare(nameof(Password)), MinLength(8), MaxLength(100)]
+        [Required(ErrorMessage = "Please re-enter the password"), DataType(DataType.Password), Compare(nameof(Password)), MinLength(8), MaxLength(100)]
         public string ConfirmPassword {get; set;} = string.Empty;
         [BindProperty]
         public bool Has2fa {get; set;}
@@ -26,6 +31,11 @@ namespace TicketSupportSystem.Pages.UserView
         [BindProperty]
         [Required(ErrorMessage = "Please select your language from the dropdown list"), MaxLength(10)]
         public string Language {get; set;} = string.Empty;
+        public RegisterModel(AppDbContext db, IHashingService hasher)
+        {
+            _db = db;
+            _hasher = hasher;
+        }
         public IActionResult OnGet()
         {
             return Page();
@@ -33,7 +43,24 @@ namespace TicketSupportSystem.Pages.UserView
         public IActionResult OnPost()
         {
           if (!ModelState.IsValid) return Page();
-          // once the info is correct we hash the password, save the user to database and redirect to dashboard
+          Email = Email.Trim().ToLowerInvariant();
+          bool emailTaken = _db.Users.Any(u => u.Email == Email);
+          if (emailTaken) {
+            ModelState.AddModelError("Email", "This email is already registered.");
+            return Page();
+          }
+          string pwHash = _hasher.Hash(Password);
+          User user = new User{
+            DisplayName = DisplayName, 
+            Email = Email, 
+            PasswordHash = pwHash, 
+            Region = Region, 
+            Language = Language, 
+            CreatedAt = DateTime.UtcNow,
+            Has2fa = Has2fa
+          };
+          _db.Users.Add(user);
+          _db.SaveChanges();
           return RedirectToPage("Dashboard");
         }
     }
