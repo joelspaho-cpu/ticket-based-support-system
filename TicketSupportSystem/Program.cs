@@ -1,9 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using TicketSupportSystem.Data;
+using TicketSupportSystem.Models;
+using TicketSupportSystem.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IHashingService, HashingService>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
