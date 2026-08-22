@@ -5,8 +5,9 @@ namespace TicketSupportSystem.Pages.UserView
 {
     public class ForgotPasswordModel : PageModel
     {
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            return Page();
         }
     }
 }
