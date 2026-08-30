@@ -1,5 +1,6 @@
 ﻿@page
 @model TicketSupportSystem.Pages.UserView.DashboardModel
-@{
-    <h1>Dashboard</h1>
-}
+<h1>Dashboard</h1>
+    <form method = "post" asp-page-handler="Logout">
+         <button type="submit">Log out</button>
+    </form>

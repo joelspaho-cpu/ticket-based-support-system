@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using TicketSupportSystem.Data;
 using TicketSupportSystem.Services;
 using TicketSupportSystem.Models;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 
 namespace TicketSupportSystem.Pages.UserView
 {
@@ -19,6 +21,7 @@ namespace TicketSupportSystem.Pages.UserView
         public string Password {get; set;} = string.Empty;
         public IActionResult OnGet()
         {
+            if (User.Identity?.IsAuthenticated == true) return RedirectToPage("/UserView/Dashboard");
             return Page();
         }
         public LoginModel (IHashingService hasher, AppDbContext db)
@@ -26,34 +29,40 @@ namespace TicketSupportSystem.Pages.UserView
             _hasher = hasher;
             _db = db;
         }
-
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid) return Page();
             Email = Email.Trim().ToLowerInvariant();
             var user = _db.Users.FirstOrDefault(u => u.Email == Email);
             if (user != null)
             {
-                var passResult = _hasher.Verify(Password, user.PasswordHash);
-                switch (passResult)
+                var passResult = _hasher.Verify(Password, user.PasswordHash); 
+                if (passResult == HashCheckResult.Failed)
                 {
-                    case HashCheckResult.Success:
-                       return RedirectToPage("Dashboard");
-                    case HashCheckResult.Failed:
-                        ModelState.AddModelError("Email", "The email or password is invalid.");
-                        return Page();
-                    case HashCheckResult.SuccessRehashNeeded:
-                        var newPass = _hasher.Hash(Password);
-                        user.PasswordHash = newPass;
-                        _db.SaveChanges();
-                        return RedirectToPage("Dashboard");
+                    ModelState.AddModelError("Email", "The email or password is invalid");
+                    return Page();
                 }
-                } else {  
-                var passResult = _hasher.DummyHashVerify(Password); // making response times equal in both branches
-                ModelState.AddModelError("Email", "The email or password is invalid.");
-                return Page(); 
+                if (passResult == HashCheckResult.SuccessRehashNeeded)
+                {
+                    var newPass = _hasher.Hash(Password);
+                    user.PasswordHash = newPass;
+                    _db.SaveChanges();
+                }
             }
-            return Page();  
-        }
+            if (user == null) 
+            {
+                var dummyPass = _hasher.DummyHashVerify(Password); // making response times equal in both cases
+                ModelState.AddModelError("Email", "The email or password is invalid");
+                    return Page();
+            }
+                var claims = new List<Claim>
+                {
+                  new Claim(ClaimTypes.NameIdentifier, Convert.ToString(user.UserID)),
+                  new Claim(ClaimTypes.Email, user.Email)
+                };
+                var identity = new ClaimsIdentity(claims, "UserScheme");
+                var principal  = new ClaimsPrincipal(identity);
+                await HttpContext.SignInAsync("UserScheme", principal, new AuthenticationProperties { IsPersistent = false });
+                return RedirectToPage("/UserView/Dashboard");}
     }
 }

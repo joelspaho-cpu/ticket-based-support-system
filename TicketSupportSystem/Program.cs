@@ -2,12 +2,17 @@ using Microsoft.EntityFrameworkCore;
 using TicketSupportSystem.Data;
 using TicketSupportSystem.Models;
 using TicketSupportSystem.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IHashingService, HashingService>();
+builder.Services.AddAuthentication("UserScheme").AddCookie("UserScheme", options => 
+{options.LoginPath = "/UserView/Login";}).AddCookie("StaffScheme", options => {options.AccessDeniedPath = "/AccessDenied";
+options.LoginPath = "/StaffView/Login";});
+
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -25,7 +30,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
