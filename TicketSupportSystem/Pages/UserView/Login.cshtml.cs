@@ -19,6 +19,8 @@ namespace TicketSupportSystem.Pages.UserView
         [BindProperty]
         [Required, DataType(DataType.Password)]
         public string Password {get; set;} = string.Empty;
+        [BindProperty]
+        public bool RemainSignedIn {get; set;}
         public IActionResult OnGet()
         {
             if (User.Identity?.IsAuthenticated == true) return RedirectToPage("/UserView/Dashboard");
@@ -62,7 +64,7 @@ namespace TicketSupportSystem.Pages.UserView
                 };
                 var identity = new ClaimsIdentity(claims, "UserScheme");
                 var principal  = new ClaimsPrincipal(identity);
-                await HttpContext.SignInAsync("UserScheme", principal, new AuthenticationProperties { IsPersistent = false });
+                await HttpContext.SignInAsync("UserScheme", principal, new AuthenticationProperties { IsPersistent = RemainSignedIn });
                 return RedirectToPage("/UserView/Dashboard");}
     }
 }

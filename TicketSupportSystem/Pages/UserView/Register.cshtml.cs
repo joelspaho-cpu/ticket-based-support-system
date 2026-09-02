@@ -38,6 +38,7 @@ namespace TicketSupportSystem.Pages.UserView
         }
         public IActionResult OnGet()
         {
+            if (User.Identity?.IsAuthenticated == true) return RedirectToPage("/UserView/Dashboard");
             return Page();
         }
         public IActionResult OnPost()
