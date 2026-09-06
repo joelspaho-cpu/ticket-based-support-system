@@ -4,3 +4,10 @@
     <form method = "post" asp-page-handler="Logout">
          <button type="submit">Log out</button>
     </form>
+     @foreach (var ticket in Model.Tickets){
+          <p>
+          <a asp-page="TicketViewer" asp-route-id="@ticket.TicketID">@ticket.Subject</a>
+          </p>
+     }
+    <a asp-page="TicketCreation">Create a ticket</a>
+     
