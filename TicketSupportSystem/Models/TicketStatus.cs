@@ -2,9 +2,9 @@ namespace TicketSupportSystem.Models;
 
 public enum TicketStatus
     {
-        Open = 1,
-        AwaitingInteraction = 2,
-        Resolved = 3,
-        ClosedByUser = 4,
+        Open = 0,
+        AwaitingInteraction = 1,
+        Resolved = 2,
+        ClosedByUser = 3
 
     }

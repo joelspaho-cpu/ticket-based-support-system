@@ -1,0 +1,30 @@
+@page
+@model TicketSupportSystem.Pages.UserView.TicketCreationModel
+ <form method="post">
+  <div class="mb-3">
+    <label asp-for="Subject" class="form-label">Subject </label>
+    <input asp-for="Subject" />
+    <span asp-validation-for="Subject" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+    <label asp-for="Query" class="form-label">What are you enquiring about? </label>
+    <select asp-for="Query" class="form-control">
+        <option value="">--Select your query--</option>
+        <option value="0">General Question</option>
+        <option value="1">Billing</option>
+        <option value="2">Account</option>
+        <option value="3">Product</option>
+        <option value="4">Feedback/Complaint</option>
+        <option value="5">Sales</option></select>
+    <span asp-validation-for="Query" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+    <label asp-for="Description" class="form-label">Description </label>
+    <textarea asp-for="Description" rows="5" cols="40" class="form-control"></textarea>
+    <span asp-validation-for="Description" class="text-danger"></span>
+
+    </div>
+    <div class="mb-3">
+    <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </form>
