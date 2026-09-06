@@ -6,6 +6,7 @@ using TicketSupportSystem.Services;
 using TicketSupportSystem.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.EntityFrameworkCore;
 
 namespace TicketSupportSystem.Pages.UserView
 {
@@ -35,7 +36,7 @@ namespace TicketSupportSystem.Pages.UserView
         {
             if (!ModelState.IsValid) return Page();
             Email = Email.Trim().ToLowerInvariant();
-            var user = _db.Users.FirstOrDefault(u => u.Email == Email);
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == Email);
             if (user != null)
             {
                 var passResult = _hasher.Verify(Password, user.PasswordHash); 
@@ -48,7 +49,7 @@ namespace TicketSupportSystem.Pages.UserView
                 {
                     var newPass = _hasher.Hash(Password);
                     user.PasswordHash = newPass;
-                    _db.SaveChanges();
+                    await _db.SaveChangesAsync();
                 }
             }
             if (user == null) 

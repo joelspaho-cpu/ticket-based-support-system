@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using TicketSupportSystem.Data;
 using TicketSupportSystem.Services;
 using TicketSupportSystem.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace TicketSupportSystem.Pages.UserView
 {
@@ -41,11 +42,11 @@ namespace TicketSupportSystem.Pages.UserView
             if (User.Identity?.IsAuthenticated == true) return RedirectToPage("/UserView/Dashboard");
             return Page();
         }
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
           if (!ModelState.IsValid) return Page();
           Email = Email.Trim().ToLowerInvariant();
-          bool emailTaken = _db.Users.Any(u => u.Email == Email);
+          bool emailTaken = await _db.Users.AnyAsync(u => u.Email == Email);
           if (emailTaken) {
             ModelState.AddModelError("Email", "This email is already registered.");
             return Page();
@@ -61,7 +62,7 @@ namespace TicketSupportSystem.Pages.UserView
             Has2fa = Has2fa
           };
           _db.Users.Add(user);
-          _db.SaveChanges();
+          await _db.SaveChangesAsync();
           return RedirectToPage("Dashboard");
         }
     }
