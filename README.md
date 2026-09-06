@@ -2,7 +2,7 @@
 ASP.NET Core customer support ticketing system with role-based access, built to production-level standards
 
 # Overview
-This app was created as an alternative to standard support channels such as Chat or Phone, heavily inspired by personal work experience, where I was able to observe how a tech giant runs things, where time could be preserved such that Advisor workflows are efficient. I was heavily exposed to what is expected of these systems, how they are leveraged to assist customers and how things are monitored to maintain high security standards. All of this, contributed to this very project, which utilizes what I deemed as excellent features and things that needed improvement with the addition of extras such as the ability for Advisors to review a list of templates with prepared responses which further enhances situations that feature top ticket drivers, where the Advisor has to write the same things repeatedly. 
+This app was created as an alternative to standard support channels such as Chat or Phone, heavily inspired by personal work experience, where I was able to observe how a tech giant runs things, where time could be preserved such that Advisor workflows are efficient. I was heavily exposed to what is expected of these systems, how they are leveraged to assist customers and how things are monitored to maintain high security standards. All of this, contributed to this very project, which utilizes what I deemed as excellent features and things that needed improvement with the addition of missing features that make things run more efficiently.
 # Tech Stack
 - C# with ASP.NET Core framework is strongly typed, mature, performant, and critically, widely used in enterprise environments.
 - PostgreSQL a free, open source, reliable, and excellently integrated in the .NET ecosystem. Industry standard for relational data.
@@ -12,11 +12,11 @@ This app was created as an alternative to standard support channels such as Chat
 # Architechture
 Several architechtural decisions were made to ensure smooth operations across the board, below are a few examples to provide an idea:
 - Queue
-  - Tickets are categorised by status. The assignment query looks at how many active tickets the Advisor holds, those currently requiring Advisor action, and assigns to whoever has the least.
+  - Tickets are categorised by status. A database query looks at how many active tickets the Advisor holds, those currently requiring Advisor action, and assigns to whoever has the least.
   - This principle similarly applies to Engineering and Level 2 when they interract with one another.
 - Security 
   - Passwords are hashed for all actors, with staff also requiring mandatory 2-factor authentication in order to successfully sign in.
-  - Tokenized based checks, if L1 attempts to access a L2 view, they will be prompted with a 404 and the incident will be logged.
+  - Tokenized based checks, if L1 attempts to access a L2 view, they will be prompted with an Access Denied screen and the incident will be logged.
   - Logs of various actions taken by staff and users are kept and fully reviewable by the relevant party. For instance, Managers have full access to Advisor logs, Admins have full access to Manager logs, Advisors have full access to user logs etc..
 - Modularity and continuity
   - The system is expected to be sustainable and resistant to edge cases, recover from a crash, retain information on refresh or when navigating between pages etc
