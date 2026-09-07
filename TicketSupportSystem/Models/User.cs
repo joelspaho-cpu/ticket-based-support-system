@@ -16,6 +16,5 @@ public class User
     [Required, MaxLength(10)]
     public required string Language {get; set;}
     public DateTime CreatedAt {get; set;}
-    public bool RemainSignedIn {get; set;}
 
 }

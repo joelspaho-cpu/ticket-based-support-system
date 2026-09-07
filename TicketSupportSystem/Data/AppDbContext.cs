@@ -9,6 +9,24 @@ public class AppDbContext : DbContext
     {
 
     }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Staff>()
+                .ToTable(t => t.HasCheckConstraint(
+                    "CK_Staff_LevelOnlyForAdvisors",
+                    $"\"Level\" IS NULL OR \"Role\" = {(int)StaffRole.Advisor}"));
+
+            modelBuilder.Entity<Message>()
+                .ToTable(t => t.HasCheckConstraint(
+                    "CK_Message_ExactlyOneAuthor",
+                    "(\"ResponseByUserID\" IS NULL) <> (\"ResponseByStaffID\" IS NULL)"));
+    }
+
     public DbSet<User> Users {get; set;}
     public DbSet<Ticket> Tickets {get; set;}
+    public DbSet<Staff> Staff {get; set;}
+    public DbSet<Message> Messages {get; set;}
+    public DbSet<Department> Departments {get; set;}
 }

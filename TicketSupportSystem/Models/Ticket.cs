@@ -7,7 +7,9 @@ public class Ticket
     public int TicketID {get; set;}
     public int UserID {get; set;}
     public User? User {get; set;}
-    public int? AssignedTo {get; set;}
+    public Staff? AssignedToStaff {get; set;}
+    public int? AssignedToStaffID {get; set;}
+    public Level Level {get; set;}
     public TicketPriority Priority {get; set;}
     [Required, MaxLength(30)]
     public required string Subject {get; set;}
@@ -20,6 +22,7 @@ public class Ticket
     [Required, MaxLength(45)]
     public required string IPAddress {get; set;}
     public DateTime? UpdatedAt {get; set;}
+    public Department? Department {get; set;}
     public int? DepartmentID {get; set;}
     public DateTime CreatedAt {get; set;}
     
