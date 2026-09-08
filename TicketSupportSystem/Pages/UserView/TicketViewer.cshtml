@@ -3,12 +3,30 @@
 @{
     ViewData["Title"] = "Ticket Details";
 }
+<form method="post">
 <div class="ticket-container">
-    <h1>Ticket #@Model.ticket.TicketID: @Model.ticket.Subject</h1>
-    
+    <h1>Ticket #@Model.Ticket.TicketID: @Model.Ticket.Subject</h1>
+
+    <div class="ticket-details">
+        <p><strong>Description:</strong> @Model.Ticket.Description</p>
+        <span class="badge bg-secondary">Status: @Model.Ticket.Status</span>
+        <span class="badge bg-secondary">Created At: @Model.Ticket.CreatedAt</span>
+    </div>
+
     <div class="ticket-body">
-        <p><strong>Description:</strong> @Model.ticket.Description</p>
-        <span class="badge">Status: @Model.ticket.Status</span>
-        <span class="badge">Created At: @Model.ticket.CreatedAt</span>
+        @foreach (var message in Model.Messages)
+        {
+            <p><strong>@(message.ResponseByUser?.DisplayName ?? message.ResponseByStaff?.DisplayName)</strong><span class="badge bg-secondary">Posted At: @message.PostedAt</span></p>
+            <p>@message.Response</p>
+        }
+    </div>
+    <div class="ticket-message">
+        <label asp-for="ReplyText" class="form-label">Reply </label>
+        <textarea asp-for="ReplyText" rows="5" cols="40" class="form-control"></textarea>
+        <span asp-validation-for="ReplyText" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+    <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </div>
+</form>
