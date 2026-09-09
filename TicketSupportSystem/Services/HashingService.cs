@@ -21,6 +21,7 @@ public class HashingService : IHashingService
     }
     
     public HashCheckResult Verify(string password, string hash){
+        try{
         var result = _hasher.VerifyHashedPassword(new object(), hash, password);
         return result switch
         {
@@ -28,5 +29,6 @@ public class HashingService : IHashingService
             PasswordVerificationResult.SuccessRehashNeeded => HashCheckResult.SuccessRehashNeeded,
             _ => HashCheckResult.Failed
         };
+        } catch (FormatException) { return HashCheckResult.Failed; }
     }
 }
