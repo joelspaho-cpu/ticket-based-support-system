@@ -481,3 +481,6 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 *.lscache
+
+# VS Code workspace settings
+.vscode/
